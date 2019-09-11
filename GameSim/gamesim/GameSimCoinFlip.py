@@ -84,32 +84,34 @@ def main():
 
         play = Plays(game,home_starters,away_starters)
         situation = Situation(play)
-        kickoff = Kickoff(homeTeam, awayTeam,home_starters,away_starters)
+        kickoff = Kickoff(game, homeTeam, awayTeam,home_starters,away_starters)
 
 # make this opening kickoff as opposed to a kickoff after a score
-        kickoff.opening_kickoff(game,situation)
+        kickoff.opening_kickoff()
+        kickoff.kickoff_return()
 # find out which team ends up with the ball and set game.possession
         situation.possession = game.first_possession
 
 
 # also, run time off of game.clock
-        if situation.clock > 0:
+        while situation.clock > 0:
             if situation.down == 1: situation.first_down()
             elif situation.down == 2: situation.second_down()
             elif situation.down == 3: situation.third_down()
             elif situation.down == 4: situation.fourth_down()
+            else: break
 
-        if situation.clock > 0:
-            if situation.down == 1: situation.first_down()
-            elif situation.down == 2: situation.second_down()
-            elif situation.down == 3: situation.third_down()
-            elif situation.down == 4: situation.fourth_down()
+        #if situation.clock > 0:
+        #    if situation.down == 1: situation.first_down()
+        #    elif situation.down == 2: situation.second_down()
+        #    elif situation.down == 3: situation.third_down()
+        #    elif situation.down == 4: situation.fourth_down()
 
-        if situation.clock > 0:
-            if situation.down == 1: situation.first_down()
-            elif situation.down == 2: situation.second_down()
-            elif situation.down == 3: situation.third_down()
-            elif situation.down == 4: situation.fourth_down()
+        #if situation.clock > 0:
+        #    if situation.down == 1: situation.first_down()
+        #    elif situation.down == 2: situation.second_down()
+        #    elif situation.down == 3: situation.third_down()
+        #    elif situation.down == 4: situation.fourth_down()
 
 if __name__ == "__main__":
     main()

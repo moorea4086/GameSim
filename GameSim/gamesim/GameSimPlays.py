@@ -17,6 +17,7 @@ class Plays:
         return play
 
     def running(self,poss):
+        # use situational statistics
         running = random.randrange(5)
         if poss == self.home_team:
             rb = self.home_starters["RB"]
@@ -26,7 +27,15 @@ class Plays:
         return running
 
     def passing(self,poss):
+        # use situational statistics
         passing = random.randrange(15)
+        if poss == self.home_team:
+            qb = self.home_starters["QB"]
+            wr = self.home_starters["WR"]
+        else:
+            qb = self.away_starters["QB"]
+            wr = self.away_starters["WR"]
+        print (qb + " passes to " + wr)
         return passing
 
     def runoff(self):
