@@ -22,7 +22,11 @@ class Situation:
 
     def min_sec(self):
         #str(self.clock//60)+":"+str(self.clock%60)
-        return(str(self.clock//60)+":"+str(self.clock%60))
+        minutes = str(self.clock//60)
+        seconds = self.clock%60
+        if seconds < 10: seconds = "0" + str(self.clock%60)
+        else: seconds = str(seconds)
+        return(minutes + ":" + seconds)
 
     def possession(self):
         self.possession = team
@@ -31,30 +35,34 @@ class Situation:
         print("("+ self.min_sec() +")", self.possession, "ball, first and", self.yards_to_go)
         play_type = self.play.determine_play()
         play_length = self.play.runoff()
-        if play_type == 'run': play_distance = self.play.running()
-        else: play_distance = self.play.passing()
+        if play_type == 'run': play_distance = self.play.running(self.possession)
+        else: play_distance = self.play.passing(self.possession)
         print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance
         if self.yards_to_go > 0: 
             self.down = 2
-        else: self.down = 1
+        else: 
+            self.yards_to_go = 10
+            self.down = 1
         
 
     def second_down(self):
         print("(" + self.min_sec() + ")", self.possession, "ball, second and", self.yards_to_go)
         play_type = self.play.determine_play()
         play_length = self.play.runoff()
-        if play_type == 'run': play_distance = self.play.running()
-        else: play_distance = self.play.passing()
+        if play_type == 'run': play_distance = self.play.running(self.possession)
+        else: play_distance = self.play.passing(self.possession)
         print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance
         if self.yards_to_go > 0: 
             self.down = 3
-        else: self.down = 1
+        else: 
+            self.yards_to_go = 10
+            self.down = 1
 
     def third_down(self):
         print("(" + self.min_sec() + ")", self.possession, "ball, third and", self.yards_to_go)

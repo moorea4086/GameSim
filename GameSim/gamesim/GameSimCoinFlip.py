@@ -82,7 +82,7 @@ def main():
         game.firstPossession()
         game.firstPossession_SecondHalf()
 
-        play = Plays(game)
+        play = Plays(game,home_starters,away_starters)
         situation = Situation(play)
         kickoff = Kickoff(homeTeam, awayTeam,home_starters,away_starters)
 
