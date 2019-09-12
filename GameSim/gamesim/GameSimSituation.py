@@ -10,15 +10,17 @@ class Situation:
         self.home_timeouts = 3
         self.away_timeouts = 3
         self.play = play
+        #self.ball_location = 0
+        #self.absolute_location = 0
 
 # input absolute location and return %50 location
-    def ballLocation(self, absoluteLocation):
+    def ballLocation(self, absolute_position):
         # 0 for own side, 1 for opponents side of the field
-        if (absoluteLocation > 50):
-            tempYard = 100-50
+        if (absolute_position > 50):
+            tempYard = absolute_position-50
             opponentSide = 50-tempYard
             return [1,opponentSide]
-        else: return [0,absoluteLocation]
+        else: return [0,absolute_position]
 
     def min_sec(self):
         #str(self.clock//60)+":"+str(self.clock%60)
@@ -31,9 +33,9 @@ class Situation:
     def possession(self):
         self.possession = team
 
-    def first_down(self):
-        # ball_location = self.ballLocation(absolute_position)
-        print("("+ self.min_sec() +")", self.possession, "ball, first and", self.yards_to_go)
+    def first_down_after_kick(self,absolute_location):
+        self.ball_location = self.ballLocation(absolute_location)
+        print("("+ self.min_sec() +")", self.possession, "ball at the " + str(self.ball_location[1]) + ", first and", self.yards_to_go)
         play_type = self.play.determine_play()
         play_length = self.play.runoff()
         if play_type == 'run': play_distance = self.play.running(self.possession)
@@ -42,6 +44,25 @@ class Situation:
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance
+        self.absolute_location = absolute_location + play_distance
+        if self.yards_to_go > 0: 
+            self.down = 2
+        else: 
+            self.yards_to_go = 10
+            self.down = 1
+
+    def first_down(self):
+        self.ball_location = self.ballLocation(self.absolute_location)
+        print("("+ self.min_sec() +")", self.possession, "ball at the " + str(self.ball_location[1]) + ", first and", self.yards_to_go)
+        play_type = self.play.determine_play()
+        play_length = self.play.runoff()
+        if play_type == 'run': play_distance = self.play.running(self.possession)
+        else: play_distance = self.play.passing(self.possession)
+        print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        self.clock = self.clock - play_length
+        #newminsec = self.min_sec()
+        self.yards_to_go = self.yards_to_go - play_distance
+        self.absolute_location = self.absolute_location + play_distance
         if self.yards_to_go > 0: 
             self.down = 2
         else: 
@@ -50,7 +71,8 @@ class Situation:
         
 
     def second_down(self):
-        print("(" + self.min_sec() + ")", self.possession, "ball, second and", self.yards_to_go)
+        self.ball_location = self.ballLocation(self.absolute_location)
+        print("("+ self.min_sec() +")", self.possession, "ball at the " + str(self.ball_location[1]) + ", second and", self.yards_to_go)
         play_type = self.play.determine_play()
         play_length = self.play.runoff()
         if play_type == 'run': play_distance = self.play.running(self.possession)
@@ -59,6 +81,7 @@ class Situation:
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance
+        self.absolute_location = self.absolute_location + play_distance
         if self.yards_to_go > 0: 
             self.down = 3
         else: 
@@ -66,7 +89,8 @@ class Situation:
             self.down = 1
 
     def third_down(self):
-        print("(" + self.min_sec() + ")", self.possession, "ball, third and", self.yards_to_go)
+        self.ball_location = self.ballLocation(self.absolute_location)
+        print("("+ self.min_sec() +")", self.possession, "ball at the " + str(self.ball_location[1]) + ", third and", self.yards_to_go)
         play_type = self.play.determine_play()
         play_length = self.play.runoff()
         if play_type == 'run': play_distance = self.play.running(self.possession)
@@ -75,6 +99,7 @@ class Situation:
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance
+        self.absolute_location = self.absolute_location + play_distance
         if self.yards_to_go > 0: 
             self.down = 4
         else: 

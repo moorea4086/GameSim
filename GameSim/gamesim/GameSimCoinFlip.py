@@ -88,12 +88,13 @@ def main():
 
 # make this opening kickoff as opposed to a kickoff after a score
         kickoff.opening_kickoff()
-        kickoff.kickoff_return()
+        starting_field_position = kickoff.kickoff_return()
 # find out which team ends up with the ball and set game.possession
         situation.possession = game.first_possession
 
 
 # also, run time off of game.clock
+        situation.first_down_after_kick(starting_field_position)
         while situation.clock > 0:
             if situation.down == 1: situation.first_down()
             elif situation.down == 2: situation.second_down()
