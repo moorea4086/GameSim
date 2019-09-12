@@ -23,7 +23,7 @@ class Plays:
             rb = self.home_starters["RB"]
         else:
             rb = self.away_starters["RB"]
-        print (rb + " runs")
+        print (rb + " runs", end = " ")
         return running
 
     def passing(self,poss):
@@ -35,7 +35,7 @@ class Plays:
         else:
             qb = self.away_starters["QB"]
             wr = self.away_starters["WR"]
-        print (qb + " passes to " + wr)
+        print (qb + " passes to " + wr, end = " ")
         return passing
 
     def runoff(self):

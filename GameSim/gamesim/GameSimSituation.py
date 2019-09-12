@@ -40,7 +40,8 @@ class Situation:
         play_length = self.play.runoff()
         if play_type == 'run': play_distance = self.play.running(self.possession)
         else: play_distance = self.play.passing(self.possession)
-        print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        #print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        print(" for",play_distance,"yards")
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance
@@ -58,7 +59,8 @@ class Situation:
         play_length = self.play.runoff()
         if play_type == 'run': play_distance = self.play.running(self.possession)
         else: play_distance = self.play.passing(self.possession)
-        print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        #print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        print("for",play_distance,"yards")
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance
@@ -77,7 +79,8 @@ class Situation:
         play_length = self.play.runoff()
         if play_type == 'run': play_distance = self.play.running(self.possession)
         else: play_distance = self.play.passing(self.possession)
-        print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        #print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        print("for",play_distance,"yards")
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance
@@ -95,7 +98,8 @@ class Situation:
         play_length = self.play.runoff()
         if play_type == 'run': play_distance = self.play.running(self.possession)
         else: play_distance = self.play.passing(self.possession)
-        print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        #print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        print("for",play_distance,"yards")
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance

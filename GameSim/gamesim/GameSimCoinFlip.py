@@ -93,7 +93,7 @@ def main():
         situation.possession = game.first_possession
 
 
-# also, run time off of game.clock
+# put this in a function and add any additional loops
         situation.first_down_after_kick(starting_field_position)
         while situation.clock > 0:
             if situation.down == 1: situation.first_down()
