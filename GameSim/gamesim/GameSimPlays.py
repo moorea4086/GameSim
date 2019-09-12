@@ -42,3 +42,41 @@ class Plays:
         # need to remember previous play and stop clock or runoff, find length of playclock
         runoff = random.randrange(25)
         return runoff
+
+    def punt(self, poss):
+        punt = random.randint(20,40)
+        if poss == self.home_team:
+            punter = self.home_starters["P"]
+        else:
+            punter = self.away_starters["P"]
+        print (punter + " punts ", end = " ")
+        return punt
+
+    def punt_return(self, poss):
+        punt_return_distance = random.randrange(15)
+        if poss == self.home_team:
+            return_man = self.home_starters["PR"]
+        else:
+            return_man = self.away_starters["PR"]
+        print (return_man + " returns the ball ", end = " ")
+        return punt_return_distance
+
+    def field_goal_attempt(self, poss):
+        # define this as make or miss
+        outcomes = ['makes','misses']
+        outcome = random.choice(outcomes)
+        if poss == self.home_team:
+            kicker = self.home_starters["PK"]
+        else:
+            kicker = self.away_starters["PK"]
+        print (kicker + " " + outcome + " the field goal")
+        return outcome
+
+    def kickoff(self, poss):
+        kickoff = random.randint(38,50)
+        if poss == self.home_team:
+            kicker = self.home_starters["PK"]
+        else:
+            kicker = self.away_starters["PK"]
+        print (kicker + " kicks ", end = " ")
+        return kickoff
