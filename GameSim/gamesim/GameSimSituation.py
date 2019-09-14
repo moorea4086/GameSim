@@ -207,50 +207,49 @@ class Situation:
                 else:
                     self.away_points = self.away_points + 3
                 self.score_output()
-                #print("The score is: ")
-                #print(self.play.home_team + " ", self.home_points)
-                #print(self.play.away_team + " ", self.away_points)
-               # kickoff
-                kickoff_distance = self.play.kickoff(self.possession)
-                print("Kick goes ", kickoff_distance, " yards", end = " ")
-                self.change_of_possession() 
-                self.absolute_location = 65 - kickoff_distance
-                self.ball_location = self.ballLocation()
-                print(" to the ", self.ball_location[1],"yard line")
-                return_distance = self.play.kickoff_return(self.possession,kickoff_distance)
-                print("Return goes ", return_distance, " yards", end = " ")
-                self.absolute_location = self.absolute_location+return_distance
-                self.ball_location = self.ballLocation()
-                print(" to the ", self.ball_location[1],"yard line")
+                self.kickoff_sequence()
             else:
                print (outcome + " the field goal")
                self.change_of_possession()
  
         else:
-           print("into the endzone. Touchdown!")
+           print("TOUCHDOWN!")
                # add 6 to the score, kick a XP
                # kickoff
+           self.play.get_placekicker(self.possession)
+           xp = self.play.xp_attempt()
+           self.play.xp_attempt_output()
            if self.possession == self.play.home_team:
-               self.home_points = self.home_points + 6
+               if xp == 'GOOD':
+                   self.home_points = self.home_points + 7
+               else:
+                   self.home_points = self.home_points + 6
            else:
-               self.away_points = self.away_points + 6
+               if xp == 'GOOD':
+                   self.away_points = self.away_points + 7
+               else:
+                   self.away_points = self.away_points + 6
            self.score_output()
-           #print("The score is: ")
-           #print(self.play.home_team + " ", self.home_points)
-           #print(self.play.away_team + " ", self.away_points)
-           kickoff_distance = self.play.kickoff(self.possession)
-           print("Kick goes ", kickoff_distance, " yards", end = " ")
-           self.change_of_possession()
-           self.absolute_location = 65 - kickoff_distance
-           self.ball_location = self.ballLocation()
-           print(" to the ", self.ball_location[1],"yard line")
-           return_distance = self.play.kickoff_return(self.possession,kickoff_distance)
-           print("Return goes ", return_distance, " yards", end = " ")
-           self.absolute_location = self.absolute_location+return_distance
-           self.ball_location = self.ballLocation()
-           print(" to the ", self.ball_location[1],"yard line")
+           self.kickoff_sequence()
 
     def score_output(self):
            print("The score is: ")
            print(self.play.home_team + " ", self.home_points)
            print(self.play.away_team + " ", self.away_points)
+
+    def kickoff_sequence(self):
+           self.play.get_placekicker(self.possession)
+           #print("Kick goes ", kickoff_distance, " yards", end = " ")
+           kickoff_distance = self.play.kickoff()
+           self.change_of_possession() 
+           self.absolute_location = 65 - kickoff_distance
+           self.ball_location = self.ballLocation()
+           self.play.kickoff_output(self.ball_location)
+           #print(" to the ", self.ball_location[1],"yard line")
+           #return_distance = self.play.kickoff_return(self.possession,kickoff_distance)
+           #print("Return goes ", return_distance, " yards", end = " ")
+           self.play.get_kickoff_return_man(self.possession)
+           self.play.kickoff_return_yards(self.possession)
+           self.absolute_location = self.play.kickoff_return_output()
+           #self.absolute_location = self.absolute_location+return_distance
+           self.ball_location = self.ballLocation()

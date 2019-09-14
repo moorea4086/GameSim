@@ -8,6 +8,7 @@ from GameSimPlayers import Away_Starters
 from GameSimKickoff import Kickoff
 from GameSimPlays import Plays
 from GameSimSituation import Situation
+from GameSimStats import Stats
 
 class Game:
 
@@ -82,7 +83,8 @@ def main():
         game.firstPossession()
         game.firstPossession_SecondHalf()
 
-        play = Plays(game,home_starters,away_starters)
+        stats = Stats(home_starters, away_starters, homeTeam, awayTeam)
+        play = Plays(game,stats)
         situation = Situation(play)
         kickoff = Kickoff(game, homeTeam, awayTeam,home_starters,away_starters)
 
@@ -103,6 +105,32 @@ def main():
             elif situation.down == 4: situation.fourth_down()
             else: break
 
+        home_qb = stats.get_qb(homeTeam)
+        away_qb = stats.get_qb(awayTeam) 
+ 
+        QB_home_attempts = stats.get_qb_attempts(home_qb)
+        QB_away_attempts = stats.get_qb_attempts(away_qb)
+
+        QB_home_completions = stats.get_qb_completions(home_qb)
+        QB_away_completions = stats.get_qb_completions(away_qb)
+        
+        QB_home_yards = stats.get_qb_yards(home_qb)
+        QB_away_yards = stats.get_qb_yards(away_qb)
+
+        print(home_qb,":", QB_home_completions,"/",QB_home_attempts, "for", QB_home_yards)
+        print(away_qb,":", QB_away_completions,"/",QB_away_attempts, "for",QB_away_yards)
+
+        home_rb = stats.get_rb(homeTeam)
+        away_rb = stats.get_rb(awayTeam)  
+
+        RB_home_attempts = stats.get_rb_attempts(home_rb)
+        RB_away_attempts = stats.get_rb_attempts(away_rb)
+        
+        RB_home_yards = stats.get_rb_yards(home_rb)
+        RB_away_yards = stats.get_rb_yards(away_rb)
+
+        print(home_rb,":", RB_home_attempts, "attempts for", RB_home_yards)
+        print(away_rb,":", RB_away_attempts, "attempts for", RB_away_yards)
         
 
         #if situation.clock > 0:

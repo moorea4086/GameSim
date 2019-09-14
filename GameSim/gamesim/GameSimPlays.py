@@ -1,6 +1,6 @@
 import random
 class Plays:
-    def __init__(self,game,home_starters,away_starters):
+    def __init__(self,game,stats):
         """
         Query all rows in the tasks table
         param conn: the Connection object
@@ -8,8 +8,9 @@ class Plays:
         """
         self.home_team = game.home_team
         self.away_team = game.away_team
-        self.home_starters = home_starters
-        self.away_starters = away_starters
+        self.home_starters = stats.home_starters
+        self.away_starters = stats.away_starters
+        self.stats = stats
 
     def determine_play(self):
         plays = ['pass','run']
@@ -32,11 +33,13 @@ class Plays:
 
     def run_output(self):
         print(self.running_back + " takes the ball ", self.run, " yards on the play")
-
+        self.stats.rb_yards(self.running_back,self.run)
+# change to get_qb, passing_attempt
     def passing(self,poss):
         # use situational statistics
         plays = ['complete','incomplete']
         self.play = random.choice(plays)
+
         if poss == self.home_team:
             qb = self.home_starters["QB"]
             wr = self.home_starters["WR"]
@@ -45,6 +48,13 @@ class Plays:
             wr = self.away_starters["WR"]
         self.quarterback = qb
         self.wide_receiver = wr
+
+        if self.play == 'complete':
+            self.stats.qb_attempt(self.quarterback)
+            self.stats.qb_completion(self.quarterback)
+        else:
+            self.stats.qb_attempt(self.quarterback)
+
         return self.play
 
     def pass_air_yards(self,poss,absolute_position):
@@ -61,6 +71,7 @@ class Plays:
         if self.passing_gain_on_play + absolute_position > 100: 
             self.yac = 100 - (self.pass_air + absolute_position)
             self.passing_gain_on_play = self.pass_air + self.yac
+        self.stats.qb_yards(self.quarterback,self.passing_gain_on_play)
         #return passing_gain_on_play
 
     def pass_output(self):
@@ -106,14 +117,22 @@ class Plays:
         print (kicker, end = " ")
         return outcome
 
-    def kickoff(self, poss):
-        kickoff = random.randint(38,50)
+    def get_placekicker(self, poss):
         if poss == self.home_team:
             kicker = self.home_starters["PK"]
         else:
             kicker = self.away_starters["PK"]
-        print (kicker + " kicks off ")
-        return kickoff
+        self.placekicker = kicker
+        #print (kicker + " kicks off ")
+        #return kickoff
+
+    def kickoff(self):
+        self.kickoff_distance = random.randint(38,50)
+        return self.kickoff_distance
+
+    def kickoff_output(self, ball_location):
+        self.start_of_kickoff_return = ball_location[1]
+        print (self.placekicker + " kicks the ball", self.kickoff_distance, "yards to the ", self.start_of_kickoff_return , " yard line.")
 
    #def opening_kickoff(self):
    #     self.kicking_team = self.first_possession_second
@@ -130,18 +149,24 @@ class Plays:
    #     self.distance = Kickoff.kickoffDistance(self.kicker)
    #     #return distance
 
-    def kickoff_return(self, poss, kickoff_distance):
-        
-        startOfReturn = 65-kickoff_distance 
-        # commented because of situation conflict, send startOfReturn to situation
-        # footballLocation = situation.ballLocation(startOfReturn)
-        # 0 is own side of field
+    def get_kickoff_return_man(self, poss):
         if poss == self.home_team:
             return_man = self.home_starters["KR"]
         else:
             return_man = self.away_starters["KR"]
-        return_yards = Plays.kickoffReturn(return_man)
-        endOfReturn = startOfReturn+return_yards
+        self.kickoff_return_man = return_man
+
+    def kickoff_return_yards(self,poss):        
+        #startOfReturn = 65-self.kickoff_distance 
+        # commented because of situation conflict, send startOfReturn to situation
+        # footballLocation = situation.ballLocation(startOfReturn)
+        # 0 is own side of field 
+        self.kick_return_distance = random.randrange(15)
+
+    def kickoff_return_output(self):
+        print(self.kickoff_return_man + " returns the ball ", self.kick_return_distance, " yards")
+        absolute_location = self.start_of_kickoff_return + self.kick_return_distance
+        return absolute_location
 
         # if the kickoff travels onto the opponenent's side of the field (it should)
         # commented because of reference to footballLocation which references situation
@@ -172,8 +197,15 @@ class Plays:
     #    # random number based on mean
     #    return 45
 
-    def kickoffReturn(return_man):
-        # random number based on mean and std
-        # or touchback
-        kick_return_distance = random.randrange(15)
-        return kick_return_distance
+    #def kickoffReturn(return_man):
+    #    # random number based on mean and std
+    #    # or touchback
+    #    kick_return_distance = random.randrange(15)
+    #    return kick_return_distance
+
+    def xp_attempt(self):
+        self.xp = 'GOOD'
+        return self.xp
+
+    def xp_attempt_output(self):
+        print("The kick by " + self.placekicker + " is up, it is " + self.xp)
