@@ -91,9 +91,11 @@ def main():
         starting_field_position = kickoff.kickoff_return()
 # find out which team ends up with the ball and set game.possession
         situation.possession = game.first_possession
-# put this in a function and add any additional loops
-        situation.first_down_after_kick(starting_field_position)
 
+# set the situation.absolute_location directly and eliminated the method situation.first_down_after_kick
+        #situation.first_down_after_kick(starting_field_position)
+        situation.absolute_location = starting_field_position
+# put this in a function and add any additional loops
         while situation.clock > 0:
             if situation.down == 1: situation.first_down()
             elif situation.down == 2: situation.second_down()

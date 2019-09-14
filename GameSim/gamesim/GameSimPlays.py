@@ -11,34 +11,23 @@ class Plays:
         self.home_starters = home_starters
         self.away_starters = away_starters
 
-        #self.quarterback
-        #self.running_back
-        #self.wide_receiver
-        #self.punter
-        #self.kicker 
-        #self.punt_returner
-        #self.kickoff_returner
-
-
     def determine_play(self):
         plays = ['pass','run']
         play = random.choice(plays)
         return play
 
-    def running(self,poss):
+    def get_running_back(self,poss):
         # use situational statistics
-        #running = random.randrange(5)
         if poss == self.home_team:
             rb = self.home_starters["RB"]
         else:
             rb = self.away_starters["RB"]
-        #print (rb + " runs", end = " ")
-        #return running
         self.running_back = rb
 
-    def running_yards(self):
+    def running_yards(self,absolute_position):
         # use situational statistics
         self.run = random.randrange(5)
+        if absolute_position + self.run > 100: self.run = 100 - absolute_position
         return self.run
 
     def run_output(self):
@@ -58,22 +47,20 @@ class Plays:
         self.wide_receiver = wr
         return self.play
 
-    def pass_air_yards(self,poss):
+    def pass_air_yards(self,poss,absolute_position):
         self.pass_air = random.randrange(15)
-        #if poss == self.home_team:
-        #    qb = self.home_starters["QB"]
-        #    wr = self.home_starters["WR"]
-        #else:
-        #    qb = self.away_starters["QB"]
-        #    wr = self.away_starters["WR"]
+        if absolute_position + self.pass_air > 100: self.pass_air = 100 - absolute_position
 
         #print (self.quarterback + " passes to " + self.wide_receiver + " for ", passing, " yards")
         #return passing
 
-    def pass_yac(self,poss):
+    def pass_yac(self,poss,absolute_position):
         self.yac = random.randrange(10)
         #print (self.wide_receiver + " runs for ", yac, " additonal yards")
         self.passing_gain_on_play = self.pass_air + self.yac
+        if self.passing_gain_on_play + absolute_position > 100: 
+            self.yac = 100 - (self.pass_air + absolute_position)
+            self.passing_gain_on_play = self.pass_air + self.yac
         #return passing_gain_on_play
 
     def pass_output(self):
