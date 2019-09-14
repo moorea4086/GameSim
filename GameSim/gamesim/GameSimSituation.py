@@ -47,16 +47,27 @@ class Situation:
         else: 
             self.ball_location[0] = 0
             self.absolute_location = 100 - self.absolute_location
-    # make sure i can return for a TD
+    # make sure i can return for a TD, the only thing different about this is the absolute location param
     def first_down_after_kick(self,absolute_location):
         self.ball_location = self.ballLocation(absolute_location)
         print("("+ self.min_sec() +")", self.possession, "ball at the " + str(self.ball_location[1]) + ", first and", self.yards_to_go)
         play_type = self.play.determine_play()
+        #print("Play type is a " + play_type)
         play_length = self.play.runoff()
-        if play_type == 'run': play_distance = self.play.running(self.possession)
-        else: play_distance = self.play.passing(self.possession)
+        if play_type == 'run': 
+            self.play.running(self.possession)
+            play_distance = self.play.running_yards()
+            self.play.run_output()
+        else: 
+            completion = self.play.passing(self.possession)
+            if completion == 'complete':
+                self.play.pass_air_yards(self.possession)
+                self.play.pass_yac(self.possession)
+                play_distance = self.play.pass_output()
+            else:
+                play_distance = int(self.play.pass_output())
         #print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
-        print(" for",play_distance,"yards")
+        #print(" for",play_distance,"yards")
         self.clock = self.clock - play_length
         #newminsec = self.min_sec()
         self.yards_to_go = self.yards_to_go - play_distance
@@ -72,14 +83,27 @@ class Situation:
         print("("+ self.min_sec() +")", self.possession, "ball at the " + str(self.ball_location[1]) + ", first and", self.yards_to_go)
         play_type = self.play.determine_play()
         play_length = self.play.runoff()
-        if play_type == 'run': play_distance = self.play.running(self.possession)
-        else: play_distance = self.play.passing(self.possession)
-        #print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        if play_type == 'run': 
+            self.play.running(self.possession)
+            play_distance = self.play.running_yards()
+            self.play.run_output()
+        else: 
+            completion = self.play.passing(self.possession)
+            if completion == 'complete':
+                self.play.pass_air_yards(self.possession)
+                self.play.pass_yac(self.possession)
+                play_distance = self.play.pass_output()
+                #air_yards = self.play.pass_air_yards(self.possession)
+                #yac_yards = self.play.pass_yac(self.possession)
+                #play_distance = air_yards + yac_yards
+            else:
+                play_distance = self.play.pass_output()
+        #print("play_distance:",type(play_distance))
         if play_distance >= self.ball_location[1] and self.ball_location[0] == 1:
             self.score(self.touchdown)
             self.clock = self.clock - play_length
         else:
-            print("for",play_distance,"yards")
+            #print("for",play_distance,"yards")
             self.clock = self.clock - play_length
             self.yards_to_go = self.yards_to_go - play_distance
             self.absolute_location = self.absolute_location + play_distance
@@ -95,14 +119,24 @@ class Situation:
         print("("+ self.min_sec() +")", self.possession, "ball at the " + str(self.ball_location[1]) + ", second and", self.yards_to_go)
         play_type = self.play.determine_play()
         play_length = self.play.runoff()
-        if play_type == 'run': play_distance = self.play.running(self.possession)
-        else: play_distance = self.play.passing(self.possession)
-        #print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        if play_type == 'run': 
+            self.play.running(self.possession)
+            play_distance = self.play.running_yards()
+            self.play.run_output()
+        else: 
+            completion = self.play.passing(self.possession)
+            if completion == 'complete':
+                self.play.pass_air_yards(self.possession)
+                self.play.pass_yac(self.possession)
+                play_distance = self.play.pass_output()
+            else:
+                play_distance = self.play.pass_output()
+        #print("play_distance:",type(play_distance))
         if play_distance >= self.ball_location[1] and self.ball_location[0] == 1:
             self.score(self.touchdown)
             self.clock = self.clock - play_length
         else:
-            print("for",play_distance,"yards")
+            #print("for",play_distance,"yards")
             self.clock = self.clock - play_length
             self.yards_to_go = self.yards_to_go - play_distance
             self.absolute_location = self.absolute_location + play_distance
@@ -117,14 +151,24 @@ class Situation:
         print("("+ self.min_sec() +")", self.possession, "ball at the " + str(self.ball_location[1]) + ", third and", self.yards_to_go)
         play_type = self.play.determine_play()
         play_length = self.play.runoff()
-        if play_type == 'run': play_distance = self.play.running(self.possession)
-        else: play_distance = self.play.passing(self.possession)
-        #print(self.possession,"decide to",play_type,"the ball for",play_distance,"yards")
+        if play_type == 'run': 
+            self.play.running(self.possession)
+            play_distance = self.play.running_yards()
+            self.play.run_output()
+        else: 
+            completion = self.play.passing(self.possession)
+            if completion == 'complete':
+                self.play.pass_air_yards(self.possession)
+                self.play.pass_yac(self.possession)
+                play_distance = self.play.pass_output()
+            else:
+                play_distance = self.play.pass_output()
+        #print("play_distance:",type(play_distance))
         if play_distance >= self.ball_location[1] and self.ball_location[0] == 1:
             self.score(self.touchdown)
             self.clock = self.clock - play_length
         else:
-            print("for",play_distance,"yards")
+            #print("for",play_distance,"yards")
             self.clock = self.clock - play_length
             self.yards_to_go = self.yards_to_go - play_distance
             self.absolute_location = self.absolute_location + play_distance
@@ -152,8 +196,6 @@ class Situation:
                 self.change_of_possession()  
             else:
                 print(punt_distance, " yards ", end = " ")
-                #self.absolute_location = self.absolute_location + punt_distance
-                #self.ball_location = self.ballLocation(self.absolute_location)
                 print(" to the ", self.ball_location[1]," yard line")
                 self.change_of_possession()
                 return_distance = self.play.punt_return(self.possession)
@@ -165,22 +207,29 @@ class Situation:
 
     def score(self, type):
         if type == 'field goal':
-           outcome = self.play.field_goal_attempt(self.possession)
-           if outcome == 'makes':
-               print (outcome + " the field goal") 
+            outcome = self.play.field_goal_attempt(self.possession)
+            if outcome == 'makes':
+                print (outcome + " the field goal") 
+                if self.possession == self.play.home_team:
+                    self.home_points = self.home_points + 3
+                else:
+                    self.away_points = self.away_points + 3
+                print("The score is: ")
+                print(self.play.home_team + " ", self.home_points)
+                print(self.play.away_team + " ", self.away_points)
                # kickoff
-               kickoff_distance = self.play.kickoff(self.possession)
-               print("Kick goes ", kickoff_distance, " yards", end = " ")
-               self.change_of_possession() 
-               self.absolute_location = 65 - kickoff_distance
-               self.ball_location = self.ballLocation(self.absolute_location)
-               print(" to the ", self.ball_location[1],"yard line")
-               return_distance = self.play.kickoff_return(self.possession,kickoff_distance)
-               print("Return goes ", return_distance, " yards", end = " ")
-               self.absolute_location = self.absolute_location+return_distance
-               self.ball_location = self.ballLocation(self.absolute_location)
-               print(" to the ", self.ball_location[1],"yard line")
-           else:
+                kickoff_distance = self.play.kickoff(self.possession)
+                print("Kick goes ", kickoff_distance, " yards", end = " ")
+                self.change_of_possession() 
+                self.absolute_location = 65 - kickoff_distance
+                self.ball_location = self.ballLocation(self.absolute_location)
+                print(" to the ", self.ball_location[1],"yard line")
+                return_distance = self.play.kickoff_return(self.possession,kickoff_distance)
+                print("Return goes ", return_distance, " yards", end = " ")
+                self.absolute_location = self.absolute_location+return_distance
+                self.ball_location = self.ballLocation(self.absolute_location)
+                print(" to the ", self.ball_location[1],"yard line")
+            else:
                print (outcome + " the field goal")
                self.change_of_possession()
  
@@ -188,6 +237,13 @@ class Situation:
            print("into the endzone. Touchdown!")
                # add 6 to the score, kick a XP
                # kickoff
+           if self.possession == self.play.home_team:
+               self.home_points = self.home_points + 6
+           else:
+               self.away_points = self.away_points + 6
+           print("The score is: ")
+           print(self.play.home_team + " ", self.home_points)
+           print(self.play.away_team + " ", self.away_points)
            kickoff_distance = self.play.kickoff(self.possession)
            print("Kick goes ", kickoff_distance, " yards", end = " ")
            self.change_of_possession()  ####

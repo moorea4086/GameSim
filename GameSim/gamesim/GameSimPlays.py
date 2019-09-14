@@ -11,6 +11,15 @@ class Plays:
         self.home_starters = home_starters
         self.away_starters = away_starters
 
+        #self.quarterback
+        #self.running_back
+        #self.wide_receiver
+        #self.punter
+        #self.kicker 
+        #self.punt_returner
+        #self.kickoff_returner
+
+
     def determine_play(self):
         plays = ['pass','run']
         play = random.choice(plays)
@@ -18,25 +27,63 @@ class Plays:
 
     def running(self,poss):
         # use situational statistics
-        running = random.randrange(5)
+        #running = random.randrange(5)
         if poss == self.home_team:
             rb = self.home_starters["RB"]
         else:
             rb = self.away_starters["RB"]
-        print (rb + " runs", end = " ")
-        return running
+        #print (rb + " runs", end = " ")
+        #return running
+        self.running_back = rb
+
+    def running_yards(self):
+        # use situational statistics
+        self.run = random.randrange(5)
+        return self.run
+
+    def run_output(self):
+        print(self.running_back + " takes the ball ", self.run, " yards on the play")
 
     def passing(self,poss):
         # use situational statistics
-        passing = random.randrange(15)
+        plays = ['complete','incomplete']
+        self.play = random.choice(plays)
         if poss == self.home_team:
             qb = self.home_starters["QB"]
             wr = self.home_starters["WR"]
         else:
             qb = self.away_starters["QB"]
             wr = self.away_starters["WR"]
-        print (qb + " passes to " + wr, end = " ")
-        return passing
+        self.quarterback = qb
+        self.wide_receiver = wr
+        return self.play
+
+    def pass_air_yards(self,poss):
+        self.pass_air = random.randrange(15)
+        #if poss == self.home_team:
+        #    qb = self.home_starters["QB"]
+        #    wr = self.home_starters["WR"]
+        #else:
+        #    qb = self.away_starters["QB"]
+        #    wr = self.away_starters["WR"]
+
+        #print (self.quarterback + " passes to " + self.wide_receiver + " for ", passing, " yards")
+        #return passing
+
+    def pass_yac(self,poss):
+        self.yac = random.randrange(10)
+        #print (self.wide_receiver + " runs for ", yac, " additonal yards")
+        self.passing_gain_on_play = self.pass_air + self.yac
+        #return passing_gain_on_play
+
+    def pass_output(self):
+        if self.play == 'complete':
+            print (self.quarterback + " passes ", self.pass_air, "to " + self.wide_receiver + " who runs for an additional", self.yac, " yards")
+            print ("Gain of ", self.passing_gain_on_play, " yards on the play")
+        else:
+            print (self.quarterback + " throws an incomplete pass. " + self.wide_receiver + " was the intended target")
+            self.passing_gain_on_play = 0
+        return self.passing_gain_on_play
 
     def runoff(self):
         # need to remember previous play and stop clock or runoff, find length of playclock
