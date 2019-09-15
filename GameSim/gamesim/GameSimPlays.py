@@ -40,12 +40,15 @@ class Plays:
         plays = ['complete','incomplete']
         self.play = random.choice(plays)
 
+        xyz = ['X','Y','Z']
+        self.xyz = random.choice(xyz)
+
         if poss == self.home_team:
             qb = self.home_starters["QB"]
-            wr = self.home_starters["WR"]
+            wr = self.home_starters[self.xyz]
         else:
             qb = self.away_starters["QB"]
-            wr = self.away_starters["WR"]
+            wr = self.away_starters[self.xyz]
         self.quarterback = qb
         self.wide_receiver = wr
 
@@ -78,6 +81,8 @@ class Plays:
         if self.play == 'complete':
             print (self.quarterback + " passes ", self.pass_air, "to " + self.wide_receiver + " who runs for an additional", self.yac, " yards")
             print ("Gain of ", self.passing_gain_on_play, " yards on the play")
+            self.stats.receiver_receptions(self.wide_receiver)
+            self.stats.receiver_yards(self.wide_receiver, self.passing_gain_on_play)
         else:
             print (self.quarterback + " throws an incomplete pass. " + self.wide_receiver + " was the intended target")
             self.passing_gain_on_play = 0

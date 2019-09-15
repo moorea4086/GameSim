@@ -6,6 +6,12 @@ class Stats:
         self.away_quarterback = self.away_starters["QB"]
         self.home_runningback = self.home_starters["RB"]
         self.away_runningback = self.away_starters["RB"]
+        self.home_x_receiver = self.home_starters["X"]
+        self.home_y_receiver = self.home_starters["Y"]
+        self.home_z_receiver = self.home_starters["Z"]
+        self.away_x_receiver = self.away_starters["X"]
+        self.away_y_receiver = self.away_starters["Y"]
+        self.away_z_receiver = self.away_starters["Z"]
         self.home_quarterback_attempts = 0
         self.away_quarterback_attempts = 0
         self.home_quarterback_completions = 0
@@ -17,6 +23,21 @@ class Stats:
         self.away_runningback_attempts = 0
         self.home_runningback_yards = 0
         self.away_runningback_yards = 0
+
+        self.home_x_receptions = 0
+        self.home_y_receptions = 0
+        self.home_z_receptions = 0
+        self.away_x_receptions = 0
+        self.away_y_receptions = 0
+        self.away_z_receptions = 0
+
+        self.home_x_yards = 0
+        self.home_y_yards = 0
+        self.home_z_yards = 0
+        self.away_x_yards = 0
+        self.away_y_yards = 0
+        self.away_z_yards = 0
+
         self.home_team = home_team
         self.away_team = away_team
 
@@ -88,5 +109,20 @@ class Stats:
         else:
             return self.away_runningback_yards
 
+    def receiver_receptions(self,receiver):
+        if receiver == self.home_x_receiver: self.home_x_receptions = self.home_x_receptions + 1
+        elif receiver == self.home_y_receiver: self.home_y_receptions = self.home_y_receptions + 1
+        elif receiver == self.home_z_receiver: self.home_z_receptions = self.home_z_receptions + 1
+        elif receiver == self.away_x_receiver: self.away_x_receptions = self.away_x_receptions + 1
+        elif receiver == self.away_y_receiver: self.away_y_receptions = self.away_y_receptions + 1
+        elif receiver == self.away_z_receiver: self.away_z_receptions = self.away_z_receptions + 1
+
+    def receiver_yards(self,receiver,yards):
+        if receiver == self.home_x_receiver: self.home_x_yards = self.home_x_yards + yards
+        elif receiver == self.home_y_receiver: self.home_y_yards = self.home_y_yards + yards
+        elif receiver == self.home_z_receiver: self.home_z_yards = self.home_z_yards + yards
+        elif receiver == self.away_x_receiver: self.away_x_yards = self.away_x_yards + yards
+        elif receiver == self.away_y_receiver: self.away_y_yards = self.away_y_yards + yards
+        elif receiver == self.away_z_receiver: self.away_z_yards = self.away_z_yards + yards
 
 

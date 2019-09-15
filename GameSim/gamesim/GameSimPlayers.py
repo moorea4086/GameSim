@@ -12,19 +12,26 @@ class Home_Starters:
     def roster(self):
         cur = self.conn.cursor
         #https://sebastianraschka.com/Articles/2014_sqlite_in_python_tutorial.html#querying-the-database---selecting-rows
-        cur.execute("SELECT Position,STARTER FROM {tn}".format(tn=self.home_team))
+        cur.execute('SELECT Position,STARTER FROM {tn} WHERE Position != "WR"'.format(tn=self.home_team))
  
         rows = self.conn.fetchall()
         for row in rows:
-            #print(row)
             value = row[1]
-            key = row[0]
-        
+            key = row[0]        
             self.home_starters[key] = value
-            #namepos = home_starters_position(row[0],row[1])
-            #print(namepos, " plays ", row[0])
-            #print(namepos)
-        print(self.home_starters["QB"])
+
+        cur.execute('SELECT Position,STARTER FROM {tn} WHERE Position == "WR"'.format(tn=self.home_team))
+        rows = self.conn.fetchall()
+        #print(row)
+        value = rows[0][1]
+        key = "X"
+        self.home_starters[key] = value
+        value = rows[1][1]
+        key = "Y"
+        self.home_starters[key] = value
+        value = rows[2][1]
+        key = "Z"
+        self.home_starters[key] = value
         return self.home_starters
 
 class Away_Starters:
@@ -50,9 +57,17 @@ class Away_Starters:
             key = row[0]
         
             self.away_starters[key] = value
-            #namepos = home_starters_position(row[0],row[1])
-            #print(namepos, " plays ", row[0])
-            #print(namepos)
-        print(self.away_starters["QB"])
+
+        cur.execute('SELECT Position,STARTER FROM {tn} WHERE Position == "WR"'.format(tn=self.away_team))
+        rows = self.conn.fetchall()
+        value = rows[0][1]
+        key = "X"
+        self.away_starters[key] = value
+        value = rows[1][1]
+        key = "Y"
+        self.away_starters[key] = value
+        value = rows[2][1]
+        key = "Z"
+        self.away_starters[key] = value
         return self.away_starters
 
