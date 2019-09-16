@@ -125,4 +125,19 @@ class Stats:
         elif receiver == self.away_y_receiver: self.away_y_yards = self.away_y_yards + yards
         elif receiver == self.away_z_receiver: self.away_z_yards = self.away_z_yards + yards
 
+    def get_receiver_receptions(self,receiver):
+        if receiver == self.home_x_receiver: return self.home_x_receptions
+        elif receiver == self.home_y_receiver: return self.home_y_receptions
+        elif receiver == self.home_z_receiver: return self.home_z_receptions
+        elif receiver == self.away_x_receiver: return self.away_x_receptions
+        elif receiver == self.away_y_receiver: return self.away_y_receptions
+        elif receiver == self.away_z_receiver: return self.away_z_receptions
+
+    def get_receiver_yards(self,receiver):
+        if receiver == self.home_x_receiver: return self.home_x_yards
+        elif receiver == self.home_y_receiver: return self.home_y_yards
+        elif receiver == self.home_z_receiver: return self.home_z_yards
+        elif receiver == self.away_x_receiver: return self.away_x_yards
+        elif receiver == self.away_y_receiver: return self.away_y_yards
+        elif receiver == self.away_z_receiver: return self.away_z_yards
 

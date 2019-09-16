@@ -132,7 +132,10 @@ def main():
         print(home_rb,":", RB_home_attempts, "attempts for", RB_home_yards)
         print(away_rb,":", RB_away_attempts, "attempts for", RB_away_yards)
         
-
+        receiver_array = [stats.home_x_receiver, stats.home_y_receiver, stats.home_z_receiver, stats.away_x_receiver, stats.away_y_receiver, stats.away_z_receiver]
+        for receiver in receiver_array:
+            print(receiver, ": ", stats.get_receiver_receptions(receiver), " receptions for ", stats.get_receiver_yards(receiver), " yards")
+        
         #if situation.clock > 0:
         #    if situation.down == 1: situation.first_down()
         #    elif situation.down == 2: situation.second_down()
