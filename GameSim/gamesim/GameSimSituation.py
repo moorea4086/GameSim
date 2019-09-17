@@ -72,10 +72,13 @@ class Situation:
 
     def first_down(self):
         self.ball_location = self.ballLocation()
+        play_length = self.play.runoff(self.play_type,self.possession)
+        self.clock = self.clock - play_length
+        self.set_strategy()
+        if self.clock < 0: return
         self.down_and_distance_output()
-        play_type = self.play.determine_play()
-        play_length = self.play.runoff()
-        if play_type == 'run': 
+        self.play_type = self.play.determine_play()        
+        if self.play_type == 'run': 
             self.play.get_running_back(self.possession)
             play_distance = self.play.running_yards(self.absolute_location)
             self.play.run_output()
@@ -88,10 +91,8 @@ class Situation:
             else:
                 play_distance = self.play.pass_output()
         if play_distance >= self.ball_location[1] and self.ball_location[0] == 1:
-            self.score(self.touchdown)
-            self.clock = self.clock - play_length
+            self.score(self.touchdown)            
         else:
-            self.clock = self.clock - play_length
             self.yards_to_go = self.yards_to_go - play_distance
             self.absolute_location = self.absolute_location + play_distance
             if self.yards_to_go > 0: 
@@ -102,10 +103,12 @@ class Situation:
 
     def second_down(self):
         self.ball_location = self.ballLocation()
+        play_length = self.play.runoff(self.play_type,self.possession)
+        self.clock = self.clock - play_length
+        if self.clock < 0: return
         self.down_and_distance_output()
-        play_type = self.play.determine_play()
-        play_length = self.play.runoff()
-        if play_type == 'run': 
+        self.play_type = self.play.determine_play()        
+        if self.play_type == 'run': 
             self.play.get_running_back(self.possession)
             play_distance = self.play.running_yards(self.absolute_location)
             self.play.run_output()
@@ -119,9 +122,7 @@ class Situation:
                 play_distance = self.play.pass_output()
         if play_distance >= self.ball_location[1] and self.ball_location[0] == 1:
             self.score(self.touchdown)
-            self.clock = self.clock - play_length
         else:
-            self.clock = self.clock - play_length
             self.yards_to_go = self.yards_to_go - play_distance
             self.absolute_location = self.absolute_location + play_distance
             if self.yards_to_go > 0: 
@@ -132,10 +133,12 @@ class Situation:
 
     def third_down(self):
         self.ball_location = self.ballLocation()
+        play_length = self.play.runoff(self.play_type,self.possession)
+        self.clock = self.clock - play_length
+        if self.clock < 0: return
         self.down_and_distance_output()
-        play_type = self.play.determine_play()
-        play_length = self.play.runoff()
-        if play_type == 'run': 
+        self.play_type = self.play.determine_play()        
+        if self.play_type == 'run': 
             self.play.get_running_back(self.possession)
             play_distance = self.play.running_yards(self.absolute_location)
             self.play.run_output()
@@ -149,9 +152,7 @@ class Situation:
                 play_distance = self.play.pass_output()
         if play_distance >= self.ball_location[1] and self.ball_location[0] == 1:
             self.score(self.touchdown)
-            self.clock = self.clock - play_length
         else:
-            self.clock = self.clock - play_length
             self.yards_to_go = self.yards_to_go - play_distance
             self.absolute_location = self.absolute_location + play_distance
             if self.yards_to_go > 0: 
@@ -163,7 +164,11 @@ class Situation:
     def fourth_down(self):
         # kickoff or go for it
         self.ball_location = self.ballLocation()
+        play_length = self.play.runoff(self.play_type,self.possession)
+        self.clock = self.clock - play_length
+        if self.clock < 0: return
         self.down_and_distance_output()
+        
         if self.ball_location[1]<40 and self.ball_location[0] == 1: 
             self.score(self.field_goal)
         else: 
@@ -184,7 +189,7 @@ class Situation:
                 self.absolute_location = self.absolute_location + return_distance
                 self.ball_location = self.ballLocation()
                 print(return_distance, "yards to the ",self.ball_location[1]," yard line")
-        play_length = self.play.runoff()
+        #self.down_and_distance_output()
         
     def down_and_distance_output(self):
         if self.down == 1: down = "First"
@@ -206,10 +211,13 @@ class Situation:
                     self.home_points = self.home_points + 3
                 else:
                     self.away_points = self.away_points + 3
+                self.play_type = 'field_goal'
                 self.score_output()
                 self.kickoff_sequence()
+                if self.clock < 0: return
             else:
                print (outcome + " the field goal")
+               self.play_type = 'field_goal'
                self.change_of_possession()
  
         else:
@@ -229,8 +237,10 @@ class Situation:
                    self.away_points = self.away_points + 7
                else:
                    self.away_points = self.away_points + 6
+           self.play_type = 'change_of_possession'
            self.score_output()
            self.kickoff_sequence()
+           if self.clock < 0: return
 
     def score_output(self):
            print("The score is: ")
@@ -238,12 +248,19 @@ class Situation:
            print(self.play.away_team + " ", self.away_points)
 
     def kickoff_sequence(self):
+           play_length = self.play.runoff(self.play_type,self.possession)
+           self.clock = self.clock - play_length
+           if self.clock < 0: return
+
            self.play.get_placekicker(self.possession)
            #print("Kick goes ", kickoff_distance, " yards", end = " ")
            kickoff_distance = self.play.kickoff()
            self.change_of_possession() 
            self.absolute_location = 65 - kickoff_distance
            self.ball_location = self.ballLocation()
+
+
+           print("("+ self.min_sec() +")",end = " ")
            self.play.kickoff_output(self.ball_location)
            #print(" to the ", self.ball_location[1],"yard line")
            #return_distance = self.play.kickoff_return(self.possession,kickoff_distance)
@@ -253,3 +270,56 @@ class Situation:
            self.absolute_location = self.play.kickoff_return_output()
            #self.absolute_location = self.absolute_location+return_distance
            self.ball_location = self.ballLocation()
+
+    def set_strategy(self):
+        if self.possession == "home_team":
+            if self.quarter == 'first' and self.clock > 120: self.play.home_strategy = 'neutral'
+            elif self.quarter == 'first' and self.clock < 120: self.play.home_strategy = 'twominute'
+            elif self.quarter == 'second' and self.home_points - self.away_points > 10: 
+                self.play.home_strategy = 'timekill'
+                if self.clock < 120: self.play.home_strategy = 'twominute'
+            elif self.quarter == 'second' and self.home_points - self.away_points >= -10: 
+                self.play.home_strategy = 'neutral'
+                if self.clock < 120: self.play.home_strategy = 'twominute'
+            elif self.quarter == 'second' and self.home_points - self.away_points < -10: self.play.home_strategy = 'aggressive'
+            elif self.quarter == 'third' and self.home_points - self.away_points > 7: 
+                self.play.home_strategy = 'timekill'
+                if self.clock < 120: self.play.home_strategy = 'twominute'
+            elif self.quarter == 'third' and self.home_points - self.away_points >= -7: 
+                self.play.home_strategy = 'neutral'
+                if self.clock < 120: self.play.home_strategy = 'twominute'
+            elif self.quarter == 'third' and self.home_points - self.away_points < -7: self.play.home_strategy = 'aggressive'
+            elif self.quarter == 'fourth' and self.home_points - self.away_points > 7: 
+                self.play.home_strategy = 'timekill'
+                if self.clock < 120: self.play.home_strategy = 'twominute'
+            elif self.quarter == 'fourth' and self.home_points - self.away_points >= -7: 
+                self.play.home_strategy = 'neutral'
+                if self.clock < 120: self.play.home_strategy = 'twominute'
+            elif self.quarter == 'fourth' and self.home_points - self.away_points < -7: self.play.home_strategy = 'aggressive'
+        if self.possession == "away_team":
+            if self.quarter == 'first' and self.clock > 120: self.play.away_strategy = 'neutral'
+            elif self.quarter == 'first' and self.clock < 120: self.play.away_strategy = 'twominute'
+            elif self.quarter == 'second' and self.away_points - self.home_points > 10: 
+                self.play.away_strategy = 'timekill'
+                if self.clock < 120: self.play.away_strategy = 'twominute'
+            elif self.quarter == 'second' and self.away_points - self.home_points >= -10: 
+                self.play.away_strategy = 'neutral'
+                if self.clock < 120: self.play.away_strategy = 'twominute'
+            elif self.quarter == 'second' and self.away_points - self.home_points < -10: 
+                self.play.away_strategy = 'aggressive'
+            elif self.quarter == 'third' and self.away_points - self.home_points > 7: 
+                self.play.away_strategy = 'timekill'
+                if self.clock < 120: self.play.away_strategy = 'twominute'
+            elif self.quarter == 'third' and self.away_points - self.home_points >= -7: 
+                self.play.away_strategy = 'neutral'
+                if self.clock < 120: self.play.away_strategy = 'twominute'
+            elif self.quarter == 'third' and self.away_points - self.home_points < -7: 
+                self.play.away_strategy = 'aggressive'
+            elif self.quarter == 'fourth' and self.away_points - self.home_points > 7: 
+                self.play.away_strategy = 'timekill'
+                if self.clock < 120: self.play.away_strategy = 'twominute'
+            elif self.quarter == 'fourth' and self.away_points - self.home_points >= -7: 
+                self.play.away_strategy = 'neutral'
+                if self.clock < 120: self.play.away_strategy = 'twominute'
+            elif self.quarter == 'fourth' and self.away_points - self.home_points < -7: 
+                self.play.away_strategy = 'aggressive'

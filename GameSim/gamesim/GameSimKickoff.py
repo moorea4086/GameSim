@@ -15,8 +15,12 @@ class Kickoff:
         self.first_possession = game.first_possession
 
     def opening_kickoff(self):
-        self.kicking_team = self.first_possession_second
-        self.receiving_team = self.first_possession
+        if self.half == "First":
+            self.kicking_team = self.first_possession_second
+            self.receiving_team = self.first_possession
+        elif self.half == "Second":
+            self.receiving_team = self.first_possession_second
+            self.kicking_team = self.first_possession
 
         if self.home_team == self.kicking_team:
             self.kicker = self.home_starters["PK"]
@@ -27,6 +31,7 @@ class Kickoff:
 
         # kickoff is from 35 yard line (of right side, with the field going left to right), so 100-35=65
         self.distance = Kickoff.kickoffDistance(self.kicker)
+
         #return distance
 
     def kickoff_return(self):

@@ -87,10 +87,13 @@ def main():
         play = Plays(game,stats)
         situation = Situation(play)
         kickoff = Kickoff(game, homeTeam, awayTeam,home_starters,away_starters)
-
+        print("("+ situation.min_sec() +")", end = " ") ######
 # make this opening kickoff as opposed to a kickoff after a score
+        kickoff.half = 'First'
         kickoff.opening_kickoff()
         starting_field_position = kickoff.kickoff_return()
+        situation.play_type = 'kickoff'
+        situation.quarter = 'first'
 # find out which team ends up with the ball and set game.possession
         situation.possession = game.first_possession
 
@@ -98,6 +101,40 @@ def main():
         #situation.first_down_after_kick(starting_field_position)
         situation.absolute_location = starting_field_position
 # put this in a function and add any additional loops
+        while situation.clock > 0:
+            if situation.down == 1: situation.first_down()
+            elif situation.down == 2: situation.second_down()
+            elif situation.down == 3: situation.third_down()
+            elif situation.down == 4: situation.fourth_down()
+            else: break
+        print("End of first")
+        situation.clock = 900
+        situation.quarter = 'second'
+        situation.play_type = 'start_of_quarter'
+        while situation.clock > 0:
+            if situation.down == 1: situation.first_down()
+            elif situation.down == 2: situation.second_down()
+            elif situation.down == 3: situation.third_down()
+            elif situation.down == 4: situation.fourth_down()
+            else: break
+        print("Half Time")
+        situation.clock = 900
+        situation.quarter = 'third'
+        kickoff.half = "Second"
+        print("("+ situation.min_sec() +")", end = " ")
+        kickoff.opening_kickoff()
+        starting_field_position = kickoff.kickoff_return()
+        situation.absolute_location = starting_field_position
+        while situation.clock > 0:
+            if situation.down == 1: situation.first_down()
+            elif situation.down == 2: situation.second_down()
+            elif situation.down == 3: situation.third_down()
+            elif situation.down == 4: situation.fourth_down()
+            else: break
+        print("End of third")
+        situation.clock = 900
+        situation.quarter = 'fourth'
+        situation.play_type = 'start_of_quarter'
         while situation.clock > 0:
             if situation.down == 1: situation.first_down()
             elif situation.down == 2: situation.second_down()
