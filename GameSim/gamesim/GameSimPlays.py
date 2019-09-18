@@ -17,6 +17,7 @@ class Plays:
         sys.stdout = open(r"C:\Users\Alex\Desktop\gamebook.txt","w+")
 
     def runoff_snapclock(self, strategy):
+        #print("At runoff_snapclock:", strategy)
         if strategy == "timekill":
             runoff = random.randint(30,39)
         elif strategy == "twominute":
@@ -24,6 +25,9 @@ class Plays:
         elif strategy == "neutral":
             runoff = random.randint(10,30)
         elif strategy == "aggressive":
+            runoff = random.randint(5,15)
+        # lastdrive needs to include TimeOuts, etc.
+        elif strategy == "lastdrive":
             runoff = random.randint(5,15)
         return runoff
 
@@ -113,14 +117,14 @@ class Plays:
         return self.play
 
     def pass_air_yards(self,poss,absolute_position):
-        self.pass_air = random.randrange(15)
+        self.pass_air = int(random.gauss(7, 3))
         if absolute_position + self.pass_air > 100: self.pass_air = 100 - absolute_position
 
         #print (self.quarterback + " passes to " + self.wide_receiver + " for ", passing, " yards")
         #return passing
 
     def pass_yac(self,poss,absolute_position):
-        self.yac = random.randrange(10)
+        self.yac = int(random.gauss(4, 3))
         #print (self.wide_receiver + " runs for ", yac, " additonal yards")
         self.passing_gain_on_play = self.pass_air + self.yac
         if self.passing_gain_on_play + absolute_position > 100: 

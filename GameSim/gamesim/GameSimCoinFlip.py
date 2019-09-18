@@ -116,6 +116,8 @@ def main():
             elif situation.down == 2: situation.second_down()
             elif situation.down == 3: situation.third_down()
             elif situation.down == 4: situation.fourth_down()
+            # if a touchdown or field goal was scored as the last play of the previous quarter
+            elif situation.down == 0: situation.kickoff_sequence()
             else: break
         print("Half Time")
         situation.clock = 900
@@ -140,6 +142,8 @@ def main():
             elif situation.down == 2: situation.second_down()
             elif situation.down == 3: situation.third_down()
             elif situation.down == 4: situation.fourth_down()
+            # if a touchdown or field goal was scored as the last play of the previous quarter
+            elif situation.down == 0: situation.kickoff_sequence()
             else: break
 
         home_qb = stats.get_qb(homeTeam)
