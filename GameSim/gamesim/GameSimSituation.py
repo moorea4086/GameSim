@@ -78,7 +78,7 @@ class Situation:
         #print("Away:"+self.play.away_strategy+"Home:"+self.play.home_strategy)
         if self.clock < 0: return
         self.down_and_distance_output()
-        self.play_type = self.play.determine_play()        
+        self.play_type = self.play.determine_play(self.possession)        ########
         if self.play_type == 'run': 
             self.play.get_running_back(self.possession)
             play_distance = self.play.running_yards(self.absolute_location)
@@ -108,7 +108,7 @@ class Situation:
         self.clock = self.clock - play_length
         if self.clock < 0: return
         self.down_and_distance_output()
-        self.play_type = self.play.determine_play()        
+        self.play_type = self.play.determine_play(self.possession)        
         if self.play_type == 'run': 
             self.play.get_running_back(self.possession)
             play_distance = self.play.running_yards(self.absolute_location)
@@ -138,7 +138,7 @@ class Situation:
         self.clock = self.clock - play_length
         if self.clock < 0: return
         self.down_and_distance_output()
-        self.play_type = self.play.determine_play()        
+        self.play_type = self.play.determine_play(self.possession)        
         if self.play_type == 'run': 
             self.play.get_running_back(self.possession)
             play_distance = self.play.running_yards(self.absolute_location)
@@ -181,7 +181,7 @@ class Situation:
 
         # go for it on opponents side of field when losing big
         elif (self.absolute_location > 80 and strategy == 'aggressive' and self.yards_to_go <= 5) or (self.absolute_location > 70 and strategy == 'aggressive' and self.yards_to_go <= 4) or  (self.absolute_location > 60 and strategy == 'aggressive' and self.yards_to_go <= 3) or (self.absolute_location > 50 and strategy == 'aggressive' and self.yards_to_go <= 2) or strategy == 'lastdrive':            
-            self.play_type = self.play.determine_play()        
+            self.play_type = self.play.determine_play(self.possession)        
             if self.play_type == 'run': 
                 self.play.get_running_back(self.possession)
                 play_distance = self.play.running_yards(self.absolute_location)
@@ -356,7 +356,7 @@ class Situation:
 
             elif self.quarter == 'fourth' and self.home_points - self.away_points > 7: 
                 self.play.home_strategy = 'timekill'
-                if self.clock < 120: self.play.home_strategy = 'twominute'
+                #if self.clock < 120: self.play.home_strategy = 'twominute'
             elif self.quarter == 'fourth' and self.home_points - self.away_points >= -7: 
                 self.play.home_strategy = 'neutral'
                 if self.clock < 240: self.play.home_strategy = 'lastdrive'

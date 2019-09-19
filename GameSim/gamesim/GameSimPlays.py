@@ -60,9 +60,31 @@ class Plays:
             clock_runoff = snap + play
         return clock_runoff
 
-    def determine_play(self):
+    def determine_play(self, possession):
         plays = ['pass','run']
-        play = random.choice(plays)
+        if possession == self.home_team:
+            strategy = self.home_strategy
+        else:
+            strategy = self.away_strategy
+
+        if strategy == 'timekill':
+            play = random.choices(plays, cum_weights=(0.40, 1.00), k = 1)
+            # 60% run
+        elif strategy == 'neutral':
+            play = random.choices(plays, cum_weights=(0.50, 1.00), k = 1)
+        elif strategy == 'aggressive':
+            play = random.choices(plays, cum_weights=(0.60, 1.00), k = 1)
+            # 60% pass
+        elif strategy == 'twominute':
+            play = random.choices(plays, cum_weights=(0.75, 1.00), k = 1)
+            # 75% pass
+        elif strategy == 'lastdrive':
+            play = random.choices(plays, cum_weights=(0.85, 1.00), k = 1)
+            # 85% pass
+        if play == ['pass']:
+            play = 'pass'
+        else: 
+            play = 'run'
         return play
 
     def get_running_back(self,poss):
